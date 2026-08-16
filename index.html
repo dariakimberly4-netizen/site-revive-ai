@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SiteRevive AI</title>
+  <style>
+    :root{--bg:#0b1020;--card:#141b31;--text:#f7f8ff;--muted:#aeb7d1;--accent:#7c5cff;--line:#252f50;--good:#37d67a;--warn:#ffb020}
+    *{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:linear-gradient(180deg,#0b1020,#11182b);color:var(--text);min-height:100vh}
+    .wrap{max-width:1100px;margin:auto;padding:24px}.hero{padding:34px 0 18px}.badge{display:inline-block;background:#1c2440;border:1px solid var(--line);padding:8px 12px;border-radius:999px;color:#cfd6ef;font-size:14px}
+    h1{font-size:clamp(36px,7vw,72px);line-height:.98;margin:18px 0 14px}.lead{font-size:18px;color:var(--muted);max-width:760px;line-height:1.6}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin:28px 0}.card{background:rgba(20,27,49,.94);border:1px solid var(--line);border-radius:20px;padding:20px;box-shadow:0 12px 30px rgba(0,0,0,.15)}
+    .card h3{margin:0 0 10px}.card p{color:var(--muted);line-height:1.5;margin:0}.num{font-weight:800;font-size:28px;color:#b9adff}.panel{background:rgba(20,27,49,.94);border:1px solid var(--line);border-radius:22px;padding:22px;margin:18px 0}
+    label{display:block;margin:12px 0 8px;color:#dce1f5;font-weight:600}input,textarea,select{width:100%;padding:14px 15px;border-radius:14px;border:1px solid var(--line);background:#0f1628;color:white;font-size:16px}textarea{min-height:110px;resize:vertical}
+    button{border:0;border-radius:14px;padding:14px 18px;font-size:16px;font-weight:800;cursor:pointer;background:var(--accent);color:white}button.secondary{background:#202945}.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:16px}
+    .result{display:none;margin-top:18px;padding:16px;border-radius:16px;background:#0f1628;border:1px dashed #394569}.scores{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0}.score{background:#161f36;border:1px solid var(--line);padding:12px;border-radius:14px;text-align:center}.score strong{display:block;font-size:24px}.pipeline{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}.step{padding:14px;border-radius:14px;background:#121a2e;border:1px solid var(--line);text-align:center;color:#dbe0f4}.tiny{font-size:13px;color:#8f9abc}.footer{padding:30px 0 10px;color:#8993ad;font-size:13px}.good{color:var(--good)}.warn{color:var(--warn)}
+    @media(max-width:650px){.scores{grid-template-columns:repeat(2,1fr)}.wrap{padding:18px}.actions button{width:100%}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <span class="badge">AI Website Agency Dashboard</span>
+      <h1>SiteRevive AI</h1>
+      <p class="lead">Find outdated websites, audit what needs improvement, prepare a modern redesign brief, organize public business contacts, and track outreach from one simple dashboard.</p>
+    </section>
+
+    <div class="pipeline">
+      <div class="step">1. FIND</div><div class="step">2. AUDIT</div><div class="step">3. REBUILD</div><div class="step">4. CONTACT</div><div class="step">5. OUTREACH</div><div class="step">6. CLOSE</div>
+    </div>
+
+    <div class="grid">
+      <div class="card"><div class="num">01</div><h3>Lead Finder</h3><p>Save business prospects and flag websites that may need a redesign.</p></div>
+      <div class="card"><div class="num">02</div><h3>Website Audit</h3><p>Generate a quick design, mobile, speed, and SEO review.</p></div>
+      <div class="card"><div class="num">03</div><h3>Redesign Brief</h3><p>Create a client-ready improvement brief for a stronger website.</p></div>
+      <div class="card"><div class="num">04</div><h3>Outreach</h3><p>Prepare personalized outreach for your approval before sending.</p></div>
+    </div>
+
+    <section class="panel">
+      <h2>Analyze a Website</h2>
+      <label for="business">Business name</label>
+      <input id="business" placeholder="Example: Luna Dental Clinic" />
+      <label for="url">Website URL</label>
+      <input id="url" placeholder="https://example.com" />
+      <label for="notes">What looks outdated?</label>
+      <textarea id="notes" placeholder="Example: cluttered layout, hard to use on mobile, old colors, slow pages..."></textarea>
+      <div class="actions"><button onclick="auditSite()">RUN QUICK AUDIT</button><button class="secondary" onclick="clearForm()">CLEAR</button></div>
+      <div id="auditResult" class="result"></div>
+    </section>
+
+    <section class="panel">
+      <h2>Lead Tracker</h2>
+      <label for="leadName">Business</label><input id="leadName" placeholder="Business name" />
+      <label for="contact">Public contact</label><input id="contact" placeholder="Email, phone, or LinkedIn" />
+      <label for="status">Status</label>
+      <select id="status"><option>New Lead</option><option>Audited</option><option>Redesign Prepared</option><option>Ready for Outreach</option><option>Contacted</option><option>Interested</option><option>Closed</option></select>
+      <div class="actions"><button onclick="saveLead()">SAVE LEAD</button></div>
+      <div id="leadList" style="margin-top:18px"></div>
+      <p class="tiny">Saved on this device using your browser's local storage.</p>
+    </section>
+
+    <div class="footer">SiteRevive AI • GitHub Pages starter app • Outreach should use legitimate public business contact information and your approval.</div>
+  </div>
+
+  <script>
+    function clamp(n){return Math.max(25,Math.min(92,n));}
+    function auditSite(){
+      const name=document.getElementById('business').value.trim()||'This business';
+      const notes=document.getElementById('notes').value.toLowerCase();
+      let penalty=0;
+      ['outdated','slow','clutter','mobile','old','hard','broken','tiny','confusing'].forEach(w=>{if(notes.includes(w)) penalty+=5});
+      const design=clamp(68-penalty+Math.floor(Math.random()*9)-4);
+      const mobile=clamp(72-penalty+Math.floor(Math.random()*9)-4);
+      const speed=clamp(70-Math.floor(penalty/2)+Math.floor(Math.random()*9)-4);
+      const seo=clamp(65-Math.floor(penalty/3)+Math.floor(Math.random()*9)-4);
+      const avg=Math.round((design+mobile+speed+seo)/4);
+      const priority=avg<50?'High':avg<70?'Medium':'Low';
+      const improvements=[];
+      if(design<65) improvements.push('modernize visual hierarchy, spacing, typography, and trust signals');
+      if(mobile<65) improvements.push('improve mobile responsiveness and tap-friendly navigation');
+      if(speed<65) improvements.push('optimize images, scripts, and page load performance');
+      if(seo<65) improvements.push('strengthen titles, headings, local SEO, and search-friendly content');
+      if(!improvements.length) improvements.push('polish conversion flow, calls-to-action, and brand consistency');
+      const r=document.getElementById('auditResult');
+      r.style.display='block';
+      r.innerHTML=`<h3>${name}: Quick Audit</h3><div class="scores"><div class="score">Design<strong>${design}/100</strong></div><div class="score">Mobile<strong>${mobile}/100</strong></div><div class="score">Speed<strong>${speed}/100</strong></div><div class="score">SEO<strong>${seo}/100</strong></div></div><p><b>Opportunity:</b> <span class="${priority==='High'?'warn':'good'}">${priority} priority</span></p><p><b>Redesign brief:</b> ${improvements.join('; ')}.</p><p><b>Outreach angle:</b> Show the business a cleaner preview first, explain the specific improvements, and ask permission to discuss a redesign.</p><p class="tiny">This is a planning estimate, not a live technical scan yet.</p>`;
+    }
+    function clearForm(){['business','url','notes'].forEach(id=>document.getElementById(id).value='');document.getElementById('auditResult').style.display='none'}
+    function getLeads(){return JSON.parse(localStorage.getItem('siteReviveLeads')||'[]')}
+    function saveLead(){const name=document.getElementById('leadName').value.trim();if(!name){alert('Enter a business name first.');return;}const leads=getLeads();leads.unshift({name,contact:document.getElementById('contact').value.trim(),status:document.getElementById('status').value,date:new Date().toLocaleDateString()});localStorage.setItem('siteReviveLeads',JSON.stringify(leads));document.getElementById('leadName').value='';document.getElementById('contact').value='';renderLeads()}
+    function removeLead(i){const leads=getLeads();leads.splice(i,1);localStorage.setItem('siteReviveLeads',JSON.stringify(leads));renderLeads()}
+    function renderLeads(){const leads=getLeads();const box=document.getElementById('leadList');if(!leads.length){box.innerHTML='<p class="tiny">No leads saved yet.</p>';return;}box.innerHTML=leads.map((l,i)=>`<div class="card" style="margin:10px 0"><h3>${l.name}</h3><p>${l.contact||'No contact added'}<br><b>Status:</b> ${l.status}<br><span class="tiny">${l.date}</span></p><div class="actions"><button class="secondary" onclick="removeLead(${i})">REMOVE</button></div></div>`).join('')}
+    renderLeads();
+  </script>
+</body>
+</html>
